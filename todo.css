@@ -1,0 +1,100 @@
+:root {
+      box-sizing: border-box;
+    }
+*,
+*::before,
+*::after {
+  box-sizing: inherit;
+  margin: 0;
+  padding: 0;
+}
+
+
+body {
+	font-family: Arial, Helvetica, sans-serif;
+	padding: 0;
+	margin: 0;
+	text-align: center;
+}
+
+.header {
+  background-color: #022d36;
+  padding: 1em;
+  color: #fff;
+}
+
+.add-todo-btn {
+  margin-top: 1em;
+	padding: 10px 200px;
+	background:  #0a1172;
+	color: white;
+	box-shadow: 3px 3px 0 0 #022d36;
+}
+
+.add-form {
+	display: none;
+	position: fixed;
+	top: 0;
+	right: 0;
+	bottom: 0;
+	left: 0;
+	background-color: rgba(0, 0, 0, 0.5);
+	z-index: 1;
+}
+
+.add-form form {
+	width: 400px;
+	margin: 10% auto;
+	border: 2px solid transparent;
+	padding: 4rem 2.5rem;
+	background: #fff;
+}
+.add-form form input {
+	width: 70%;
+	display: block;
+	border: 1px solid #050401;
+	border-radius:5px;
+	margin: 10px auto;
+	padding-left: 10px;
+	outline: none;
+}
+
+.add-form form input {
+	height: 30px;
+}
+.add-form form button {
+		margin: 10px auto;
+		color: #fff;
+		background: #022d36;
+		padding: 10px 20px;
+		border: 0;
+}
+
+.main  h3 {
+  margin: 1em;
+  color: #050401;
+  text-shadow: 1px 1px  #022d36;
+}
+
+table {
+    width: 40%;
+    margin: 0 auto;
+    text-align: center;
+}
+table tr {
+  border: 1px solid black;
+}
+table tr:hover {
+  background-color: #ccc;
+}
+
+table button {
+  background: red;
+  color: white;
+  padding: 5px;
+  border: 0;
+}
+
+.true {
+	text-decoration: line-through;
+}
