@@ -88,13 +88,16 @@ table tr:hover {
   background-color: #ccc;
 }
 
-table button {
-  background: red;
-  color: white;
-  padding: 5px;
-  border: 0;
-}
-
 .true {
 	text-decoration: line-through;
+}
+.false {
+	text-decoration: none;
+}
+.delete > a {
+ background: red;
+  color: white;
+  padding: 5px;
+	border: 0;
+	cursor: pointer;
 }

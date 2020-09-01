@@ -1,8 +1,8 @@
+
 // random integer for id
 function randomInteger(min, max) {
   return Math.floor(Math.random() * (max - min + 1)) + min;
 }
-
 
 const button = document.querySelector('.add-todo-btn');
 const cancel = document.querySelector('.cancel');
@@ -13,7 +13,6 @@ const form = document.querySelector('#form');
 button.onclick = () => {
     addForm.style.display = 'block';
   };
-
   // close form display
 cancel.onclick = (e) => {
     addForm.style.display = 'none';
@@ -60,82 +59,81 @@ const store = {
   },
   markTodoCompleteStore: (id) => {
     const todos = store.getTodos();
-
-    todos.forEach(todo => {
+    todos.forEach((todo, index) => {
       if(todo.id === Number(id)) {
-        if(todo.isComplete) {
-          todo.isComplete = false;
-        } 
-        todo.isComplete = true;
+        todos[index].isComplete = !todos[index].isComplete
       }
     });
-    console.log(todos);
     localStorage.setItem('todos', JSON.stringify(todos));
   }
 }
 
 // handle ui Logic
-const ui = {
-  displayTodo: () => {
+class UI {
+  constructor () {
+    this.displayTodo()
+  }
+  displayTodo () {
     const todos = store.getTodos();
-    todos.forEach(todo => ui.addTodoToList(todo))
-  },
-  addTodoToList: (todo) => {
+    todos.forEach(todo => this.addTodoToList(todo))
+  };
+  addTodoToList = (todo) => {
     const list = document.querySelector('.tbody');
     const row = document.createElement('tr');
-
     row.innerHTML = `
       <td>
-        <input type="checkbox" class="change" onchange=handleChange(${todo.id}); />
+        <input 
+          type="checkbox" 
+          class="change" 
+          onchange="todo.handleChange(event, ${todo.id})"
+          ${todo.isComplete ? "checked" : ""} 
+          />
       </td>  
       <td id=${todo.id} class=${todo.isComplete}>${todo.title}</td>
-      <td><button type="button" class="delete">X</button></td>
+      <td class="delete id"><a onclick="todo.removeTodo(event, ${todo.id})">X</a></td>
     `;
 
     list.appendChild(row);
-  },
-  removeTodo: (el) => {
+  }
+  removeTodo = (event, id) => {
+    event.preventDefault();
+    let el = event.target.parentElement;
+    console.log(el.parentElement);
     if(el.classList.contains('delete')) {
-      el.parentElement.parentElement.remove()
+      el.parentElement.remove()
     }
-  },
-  clearForm: () => {
-    document.querySelector("#form-title").value = ''
-  },
-  markTodoComplete: (el) => {
-    if(el.classList.contains('change')) {
-      console.log(el.parentElement.nextElementSibling)
+    store.removeTodoFromStore(id)
+  }
+  clearForm = () => {
+    document.querySelector("#form-title").value = '';
+  }
+  handleChange = (event, id) => {
+    let target = event.target.parentElement.nextElementSibling
+    if(target.className === "false") {
+      target.classList.remove("false")
+      target.classList.add("true")
+    } else {
+      target.classList.remove("true")
+      target.classList.add("false")
     }
+    store.markTodoCompleteStore(id)
+}
+  addTodo = (event) => {
+    event.preventDefault();
+    const title = document.querySelector("#form-title").value;
+    const todo = todoObj(title);
+    this.addTodoToList(todo);
+    this.clearForm()
+    store.addTodosToStore(todo)
+    addForm.style.display = 'none';
   }
 };
 
+
+
 // display todos event
-document.addEventListener('DOMContentLoaded', ui.displayTodo());
-
-
-// Add todo event
-form.addEventListener('submit', (event) => {
-    event.preventDefault();
-
-    const title = document.querySelector("#form-title").value;
-    
-    const todo = todoObj(title);
-
-    ui.addTodoToList(todo);
-
-    store.addTodosToStore(todo)
-
-    addForm.style.display = 'none';
-  });
-
-
-// remove todo event
-document.querySelector('.tbody').addEventListener('click', (event) => {
-  ui.removeTodo(event.target);
-  store.removeTodoFromStore(event.target.parentElement.previousElementSibling.id)
+let todo;
+window.addEventListener('load', () => {
+  todo =  new UI();
 });
 
-const handleChange = (id) => {
-  store.markTodoCompleteStore(id)
-  document.location.reload(true);
-}

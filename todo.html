@@ -13,7 +13,7 @@
     <main>
       <button class="add-todo-btn">Add a new Todo</button>
       <div class="add-form">
-        <form id="form">
+        <form id="form" onsubmit="todo.addTodo(event)">
             <h4>Write your Todo</h4>
             <input type="text" placeholder="Title" id="form-title">
             <button type="button" class="cancel">Cancel</button>
